@@ -119,10 +119,10 @@ class Blockchain {
             let elapsedTime = self._getElapsedMinutes(message);
 
             if (elapsedTime >= 5)
-                return reject("Timeout");
+                return reject(new Error("Timeout"));
 
             if (!bitcoinMessage.verify(message, address, signature))
-                return reject("The message with wallet address and signature are invalid");
+                return reject(new Error("The message with wallet address and signature are invalid"));
 
             let data = {
                 owner: address,
@@ -222,10 +222,10 @@ class Blockchain {
                         .then(() => {
                             if (block.previousBlockHash === self.chain[index - 1].hash) return;
 
-                            errorLog.push(Error(`Chain is corrupted the block ${block.hash} in position ${index} is broken!!!`));
+                            errorLog.push(new Error(`Chain is corrupted the block ${block.hash} in position ${index} is broken!!!`));
                         })
                         .catch(() => {
-                            errorLog.push(Error(`Block ${block.hash} in position ${index} is broken!!!`));
+                            errorLog.push(new Error(`Block ${block.hash} in position ${index} is broken!!!`));
                         });
                 }
             });
